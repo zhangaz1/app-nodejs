@@ -14,6 +14,8 @@ import passport from 'passport'
 import './passport/index.js'
 import { initDriver } from './neo4j.js'
 
+import { init as initDB } from './initDB/init.js';
+
 // Load config from .env
 config()
 
@@ -33,7 +35,11 @@ const {
   NEO4J_PASSWORD,
 } = process.env
 
-initDriver(NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD)
+await initDriver(NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD);
+let empty = true;
+if (empty) {
+  await initDB();
+}
 
 // Serve the UI
 app.use(express.static('public'))
@@ -51,7 +57,7 @@ app.use(errorMiddleware)
 
 // Server all other routes as index.html
 app.use((req, res) => {
-  if (req.header('Content-Type') === 'application/json' ) {
+  if (req.header('Content-Type') === 'application/json') {
     return res.status(404).json({
       error: 404,
       message: 'Page not found'

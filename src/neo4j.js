@@ -1,6 +1,5 @@
 // TODO: Import the neo4j-driver dependency
 import neo4j from 'neo4j-driver';
-import { init as initDB } from './initDB/init.js';
 
 /**
  * A singleton instance of the Neo4j Driver to be used across the app
@@ -29,7 +28,6 @@ export function initDriver(uri, username, password) {
     .then(result => {
       console.log('verify success!', result);
     })
-    .then(initDB)
     .then(() => driver);
 }
 // end::initDriver[]
